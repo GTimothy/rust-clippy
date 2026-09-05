@@ -102,7 +102,11 @@ pub(super) fn check<'tcx>(
                         scope_aware_ty_string(cx.tcx, expr_hir_id.owner.def_id, from_ty),
                         scope_aware_ty_string(cx.tcx, expr_hir_id.owner.def_id, to_ty)
                     ),
-                    Applicability::MaybeIncorrect,
+                    if last.ident.span.from_expansion() {
+                        Applicability::MaybeIncorrect
+                    } else {
+                        Applicability::MachineApplicable
+                    },
                 );
             }
         },
